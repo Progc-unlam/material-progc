@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     {
         wait(NULL);
     }
-    
-	return EXIT_SUCCESS;
+
+    return EXIT_SUCCESS;
 }
 
