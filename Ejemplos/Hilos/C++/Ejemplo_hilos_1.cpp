@@ -1,12 +1,10 @@
 #include <thread>
 #include <iostream>
 
-//Valor que los hilos imprimirán en pantalla
-int value = 0;
-
-void ShowValue(int id)
+void ShowValue(int value)
 {
-    std::cout<<"ID: "<<id<<" - Value: "<<value<<std::endl;
+    std::cout<<"TID: "<<std::this_thread::get_id()<<std::endl;
+    std::cout<<"Value: "<<value<<std::endl;
 }
 
 int main( int argc, char *argv[] )
