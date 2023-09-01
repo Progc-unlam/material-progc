@@ -2,26 +2,23 @@
 #include <iostream>
 #include <string>
 
+//Valor que los hilos imprimirán en pantalla
 int valor = 0;
 
-void incrementarValor( std::string nombre )
+void IncrementarValor( std::string nombre )
 {
-	std::cout<<"Nombre: "<<nombre<<std::endl;
-	valor++;
+    std::cout<<"Nombre: "<<nombre<<" - Valor: "<<valor<<std::endl;
 }
 
 int main( int argc, char *argv[] )
 {
-	//Creación de los hilos
-	std::thread HiloA( incrementarValor, "Hilo A" );
-	std::thread HiloB( incrementarValor, "Hilo B" );
+    //Creación de los hilos
+    std::thread hilo_a( IncrementarValor, "Hilo A" );
+    std::thread hilo_b( IncrementarValor, "Hilo B" );
 
-	//Espera la finalización de los hilos creados
-	HiloA.join();
-	HiloB.join();
-	
-	std::cout<<"Valor: "<<valor<<std::endl;
-			
-	return EXIT_SUCCESS;
+    //Espera la finalización de los hilos creados
+    hilo_a.join();
+    hilo_b.join();
+
+    return EXIT_SUCCESS;
 }
-
