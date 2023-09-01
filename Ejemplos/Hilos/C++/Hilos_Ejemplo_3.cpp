@@ -1,28 +1,20 @@
-#include <atomic>
-#include <iostream>
 #include <thread>
-#include <vector>
+#include <iostream>
 
-void incrementar( std::atomic<int> &var )
+void IncreaseValue(int &value)
 {
-	var++;
-}
+    value++;
+};
 
-int main(int argc, char *argv[]) 
+int main( int argc, char *argv[] )
 {
-	std::vector<std::thread> hilos;
-	std::atomic<int> x(0);
-	int cant_hilos = atoi(argv[1]);
-	
-	for(int i=0; i<cant_hilos; i++)
-	{
-		hilos.push_back( std::thread( incrementar, std::ref( x ) ) );
-	}
-	
-	for(int i=0; i<cant_hilos; i++)
-	{
-		hilos[i].join();
-	}
-	
-	std::cout<<"Valor: "<<x<<std::endl;
+    int value = 0;
+
+    std::thread hilo_a(IncreaseValue, std::ref(value));
+
+    hilo_a.join();
+
+    std::cout<<"Valor final: "<<value<<std::endl;
+
+    return EXIT_SUCCESS;
 }
