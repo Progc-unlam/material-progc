@@ -1,28 +1,27 @@
 #include <thread>
 #include <iostream>
-#include <atomic>
 #include <vector>
 
-int array[] = { 1, 2, 3, 4 };
-std::atomic<int> suma(0);
+//Array de valores a sumar por los hilos
+std::vector<int> values = {1, 2, 3, 4};
 
-void sumarRango( int inicio, int fin )
+void AddRange(std::string name, int begin, int end)
 {
-	for( int i=inicio; i<=fin;i++)
-	{
-		suma+=array[i];
-	}
+    int total = 0;
+    for (int i = begin; i <= end; i++)
+    {
+        total+=values[i];
+    }
+    std::cout<<name<<": "<<total<<std::endl;
 };
 
 int main( int argc, char *argv[] )
 {
-	std::thread HiloA( sumarRango, 0, 1 );
-	std::thread HiloB( sumarRango, 2, 3 );
-	
-	HiloA.join();
-	HiloB.join();
-	
-	std::cout<<"Suma: "<<suma<<std::endl;
-			
-	return EXIT_SUCCESS;
+    std::thread hilo_a(AddRange,"A", 0, 1);
+    std::thread hilo_b(AddRange,"B", 2, 3);
+
+    hilo_a.join();
+    hilo_b.join();
+    
+    return EXIT_SUCCESS;
 }
