@@ -5,7 +5,7 @@
 //Valor que los hilos imprimirán en pantalla
 int valor = 0;
 
-void IncrementarValor( std::string nombre )
+void IncrementarValor(std::string nombre)
 {
     std::cout<<"Nombre: "<<nombre<<" - Valor: "<<valor<<std::endl;
 }
@@ -13,8 +13,8 @@ void IncrementarValor( std::string nombre )
 int main( int argc, char *argv[] )
 {
     //Creación de los hilos
-    std::thread hilo_a( IncrementarValor, "Hilo A" );
-    std::thread hilo_b( IncrementarValor, "Hilo B" );
+    std::thread hilo_a(IncrementarValor, "Hilo A");
+    std::thread hilo_b(IncrementarValor, "Hilo B");
 
     //Espera la finalización de los hilos creados
     hilo_a.join();
