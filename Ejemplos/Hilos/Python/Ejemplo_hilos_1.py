@@ -1,25 +1,23 @@
 import threading
 
-valor = 0
+value = 0
 
-def cambiarValor( nuevo_valor ):
-	global valor	#Para que pueda ver la variable valor
-	print( threading.current_thread().name," - TID: ", threading.get_native_id() )
-	valor = nuevo_valor
-		
+def change_value(new_value):
+    global value #Para que pueda escribir la variable
+    print(threading.current_thread().name, "TID", threading.get_native_id())
+    value = new_value
 
-#Main
-#Creación de los hilos
-HiloA = threading.Thread( target=cambiarValor, args=(1,), name="Hilo A" ) 
-HiloB = threading.Thread( target=cambiarValor, args=(2,), name="Hilo B" ) 
+def main():
+    hilo_a = threading.Thread(target=change_value, args=(1,), name="A") 
+    hilo_b = threading.Thread(target=change_value, args=(2,), name="B") 
 
-#Inicio de los hilos
-HiloA.start()
-HiloB.start()
+    hilo_a.start()
+    hilo_b.start()
 
-#Espera de los hilos
-HiloA.join()
-HiloB.join()
+    hilo_a.join()
+    hilo_b.join()
 
-print( "Valor final: ", valor )
+    print( "Valor final: ", value )
 
+if __name__ == '__main__':
+    main()
