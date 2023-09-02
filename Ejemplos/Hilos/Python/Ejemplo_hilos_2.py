@@ -8,10 +8,10 @@ def show_tid():
 
 def main():
     for _ in range(5):
-        threading.Thread( target=show_tid, daemon=True ).start() 
+        threading.Thread(target=show_tid, daemon=True).start() 
 
     for hilo in threading.enumerate():
-        print( hilo.name )
+        print(hilo.name)
 
 if __name__ == '__main__':
     main()
