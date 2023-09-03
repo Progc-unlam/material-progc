@@ -5,8 +5,8 @@ public class RunnableThread
         @Override
         public void run()
         {
-            System.out.println( "TID:    " + Thread.currentThread().getId() );
-            System.out.println(	"Nombre: " + Thread.currentThread().getName() );
+            System.out.println("TID:    " + Thread.currentThread().getId());
+            System.out.println("Nombre: " + Thread.currentThread().getName());
         }
     }
 
