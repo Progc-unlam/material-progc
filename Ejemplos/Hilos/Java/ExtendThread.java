@@ -4,8 +4,8 @@ public class ExtendThread
     {
         public void run()
         {
-            System.out.println( "TID:    " + this.getId() );
-            System.out.println(	"Nombre: " + this.getName() );
+            System.out.println("TID:    " + this.getId());
+            System.out.println("Nombre: " + this.getName());
         }
     }
 
