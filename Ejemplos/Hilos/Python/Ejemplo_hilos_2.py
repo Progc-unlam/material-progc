@@ -1,17 +1,24 @@
 import threading
 import time
 
+MAX_THREADS = 5
 
 def show_tid():
-    time.sleep(2) #Jugar con/sin esta línea
-    print("TID", threading.get_native_id())
-
+    print("TID "+str(threading.get_native_id()))
+    #time.sleep(2)
+    
 def main():
-    for _ in range(5):
-        threading.Thread(target=show_tid, daemon=True).start() 
+    my_threads = []
 
-    for hilo in threading.enumerate():
-        print(hilo.name)
+    for _ in range(MAX_THREADS):
+        my_threads.append(threading.Thread(target=show_tid, daemon=False)) 
+    
+    for i in range(MAX_THREADS):
+        my_threads[i].start() 
+    
+    #time.sleep(2) 
+    for thread in my_threads:
+        print(thread.name)
 
 if __name__ == '__main__':
     main()
