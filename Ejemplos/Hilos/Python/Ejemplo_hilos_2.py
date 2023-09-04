@@ -18,7 +18,10 @@ def main():
     
     #time.sleep(2) 
     for thread in my_threads:
-        print(thread.name)
+        print(thread.name, thread.is_alive())
 
+    for i in range(MAX_THREADS):
+        my_threads[i].join() 
+    
 if __name__ == '__main__':
     main()
