@@ -6,10 +6,9 @@ TAM = 5
 mc = shared_memory.SharedMemory( name="mi_mem", create=True, size=TAM )
 
 for i in range(TAM):
-	mc.buf[ i ] = i+1
+    mc.buf[i] = i+1
 
-time.sleep(5)
+time.sleep(15)
 
 mc.close()
 mc.unlink()
-
