@@ -3,30 +3,27 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <signal.h>
+#include <stdbool.h>
 
-bool fin = false;
-void manejador( int sig )
-{
-	
-	raise( SIGCONT );
-	
-};
+#define CHILD 0
 
 int main(int argc, char *argv[])
 {
-	pid_t pid = fork(); 	
-	
-	if( pid == 0 )	//Proceso Hijo
-	{
-		raise( SIGSTOP );
-		return EXIT_SUCCESS;
-	}	
+    pid_t pid = fork(); 	
 
-	//Proceso Padre
-	sleep(1);
-	kill( pid, SIGCONT );
-	wait( NULL );
-	
-	return EXIT_SUCCESS;
+    if( pid == CHILD )	
+    {
+        printf("Hijo se detiene a si mismo\n");
+        raise( SIGSTOP );
+        printf("Hijo reanuda su ejecución\n");
+        return EXIT_SUCCESS;
+    }
+
+    //Proceso Padre
+    sleep(2);
+    printf("Padre reanuda Hijo con el envio de SIGCONT\n");		
+    kill(pid, SIGCONT);
+    wait(NULL);
+
+    return EXIT_SUCCESS;
 }
-
