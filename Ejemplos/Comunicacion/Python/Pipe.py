@@ -4,11 +4,11 @@ import sys
 
 recepcion, envio = Pipe(False)
 
-hijo = os.fork()
-if hijo < 0:
+pid = os.fork()
+if pid < 0:
     sys.exit("Error al crear el nuevo proceso")
 
-if hijo:
+if pid:
     recepcion.close()
     envio.send((1, 'Yerba "La Tranquera"'))
     envio.close()
