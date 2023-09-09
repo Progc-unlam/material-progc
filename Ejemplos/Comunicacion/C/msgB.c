@@ -10,41 +10,41 @@
 
 struct mi_msg
 {
-	long id;
-	char texto[10];
-	float x;	
+    long id;
+    char nombre[10];
+    float altura;	
 };
 
 int main(int argc, char *argv[])
 {
-	int id_cola;
-	struct mi_msg mensaje;
-	int tamanio = sizeof(mensaje)-sizeof(long);
-	
-	//Se crea una clave para el S.O. 
-	key_t clave = ftok ("/bin/ls", 1);
-	
-	//	Se crea la cola de mensajes.
-	id_cola = msgget (clave, IPC_CREAT | 0600 );
-	
-	if (id_cola == -1)
-	{
-		perror("msgget");
-		return EXIT_FAILURE;
-	}
+    int id_cola;
+    struct mi_msg mensaje;
+    int tamanio = sizeof(mensaje)-sizeof(long);
 
-	//Esperamos recibir un mensaje del tipo 1
-	msgrcv ( id_cola, &mensaje, tamanio, MSG_TIPO_1, SIN_OPCION );
-	printf( "Recibido:\n");
-	printf( "id:\t\t%ld\n",mensaje.id);
-	printf( "texto:\t%s\n",mensaje.texto);
-	printf( "x:\t\t%.2f\n",mensaje.x);
+    //Se crea una clave para el S.O. 
+    key_t clave = ftok ("/bin/ls", 1);
 
-	mensaje.id = MSG_TIPO_2;
-	mensaje.x  = 1.90;
-	strcpy ( mensaje.texto, "Chau");
+    //	Se crea la cola de mensajes.
+    id_cola = msgget (clave, IPC_CREAT | 0600);
 
-	msgsnd( id_cola, &mensaje, tamanio, IPC_NOWAIT );
-	
-	return EXIT_SUCCESS;
+    if (id_cola == -1)
+    {
+        perror("msgget");
+        return EXIT_FAILURE;
+    }
+
+    //Esperamos recibir un mensaje del tipo 1
+    msgrcv(id_cola, &mensaje, tamanio, MSG_TIPO_1, SIN_OPCION);
+    printf("Recibido:\n");
+    printf("Id:\t\t%ld\n", mensaje.id);
+    printf("Nombre:\t%s\n", mensaje.nombre);
+    printf("Altura:\t%.2f\n", mensaje.altura);
+
+    mensaje.id = MSG_TIPO_2;
+    mensaje.altura  = 1.90;
+    strcpy(mensaje.nombre, "Ernesto");
+
+    msgsnd(id_cola, &mensaje, tamanio, IPC_NOWAIT);
+
+    return EXIT_SUCCESS;
 }
