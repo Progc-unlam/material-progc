@@ -45,9 +45,9 @@ int main(int argc, char *argv[])
     msgrcv(id_cola, &mensaje, tamanio, MSG_TIPO_2, SIN_OPCION);
 
     printf( "Recibido:\n");
-    printf( "id:\t\t%ld\n",mensaje.id);
-    printf( "texto:\t%s\n",mensaje.nombre);
-    printf( "x:\t\t%.2f\n",mensaje.altura);
+    printf( "Id:\t\t%ld\n",mensaje.id);
+    printf( "Nombre:\t%s\n",mensaje.nombre);
+    printf( "Altura:\t%.2f\n",mensaje.altura);
 
     if( msgctl(id_cola, IPC_RMID, NULL) < 0)
     {
