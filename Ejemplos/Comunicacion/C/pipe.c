@@ -5,69 +5,62 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-#define LARGO 	   20
-#define LECTURA	    0
-#define ESCRITURA   1
-#define DESCRIPTOR  2
+#define READER 0
+#define WRITER 1
+#define CHILD 0
 
-struct mensaje
+struct product
 {
     int id;
-    char detalle[ LARGO ];
+    char info[20];
 };
 
 int main( int argc, char **argv )
 {
-    pid_t pid;
-    struct mensaje msj;
-
-    int p[DESCRIPTOR];	//DESCRIPTOR vale 2
-    if( pipe( p ) == -1 )
+    int my_pipe[2];	
+    if (pipe(my_pipe) == -1)
     {
         perror("Error en pipe");
         return EXIT_FAILURE;
     }
 
-    pid = fork();
-    if( pid == -1 ) 
+    pid_t process = fork();
+    if (process < 0) 
     {
         perror("Error de fork()");
         return EXIT_FAILURE;
     }	
 	
-    if( pid == 0 ) //Hijo		
+    struct product my_product;
+    if (process == CHILD) 		
     {
-        //ESCRITURA vale 1
-        close( p[ESCRITURA] ); 
+        close(my_pipe[WRITER]); 
 
-        if( read( p[LECTURA], &msj, sizeof(struct mensaje) ) == -1)
+        if (read(my_pipe[READER], &my_product, sizeof(struct product)) == -1)
         {
             perror("Error en read()");
             return EXIT_FAILURE;
         }
+        printf("Id: %d \nDetalle: %s\n", my_product.id, my_product.info);
 
-        printf("Id: %d \nDetalle: %s\n", msj.id, msj.detalle);
+        close(my_pipe[READER]);
 
-        close( p[LECTURA] );
+        return EXIT_SUCCESS;
     }
-    else //Padre
+
+    close(my_pipe[READER]); 
+
+    my_product.id = 1;
+    strcpy(my_product.info, "Yerba La Tranquera");
+    if (write(my_pipe[WRITER], &my_product, sizeof(struct product)) == -1)
     {
-        //LECTURA vale 0
-        close( p[LECTURA] ); 
-
-        msj.id = 1;
-        strcpy( msj.detalle, "Yerba La Tranquera" );
-
-        if( write( p[ESCRITURA], &msj, sizeof( struct mensaje ) ) == -1)
-        {
-            perror("Error en write()");
-            return EXIT_FAILURE;
-        }	
-
-        close( p[ESCRITURA] );
-
-        wait( NULL );
+        perror("Error en write()");
+        return EXIT_FAILURE;
     }
 
+    close(my_pipe[WRITER]);
+
+    wait(NULL);
+    
     return EXIT_SUCCESS;
 }
