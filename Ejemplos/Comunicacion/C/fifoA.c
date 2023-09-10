@@ -8,7 +8,7 @@
 typedef struct
 {
     int dni;
-    char nombre[60000];	
+    char nombre[30];	
 } t_dato;
 
 int main (int argc, char *argv[])
