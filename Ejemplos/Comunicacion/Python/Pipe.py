@@ -2,19 +2,25 @@ from multiprocessing import Pipe
 import os
 import sys
 
-recepcion, envio = Pipe(False)
+CHILD = 0
 
-pid = os.fork()
-if pid < 0:
-    sys.exit("Error al crear el nuevo proceso")
+def main():
+    recepcion, envio = Pipe(False)
 
-if pid:
-    recepcion.close()
-    envio.send((1, 'Yerba "La Tranquera"'))
-    envio.close()
-    os.wait() 
-else:
-    envio.close()
-    print("Recibido: ", recepcion.recv())
-    recepcion.close()
-    os._exit(0)
+    process = os.fork()
+    if process < 0:
+        sys.exit("Error al crear el nuevo proceso")
+
+    if process == CHILD:
+        envio.close()
+        print("Recibido: ", recepcion.recv())
+        recepcion.close()
+        os._exit(0)
+    else:
+        recepcion.close()
+        envio.send((1, 'Yerba "La Tranquera"'))
+        envio.close()
+        os.wait()
+
+if __name__ == '__main__':
+    main()
