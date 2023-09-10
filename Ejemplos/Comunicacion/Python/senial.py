@@ -1,7 +1,7 @@
 import os
 import signal
-import time
 import sys
+import time
 
 CHILD = 0
 
