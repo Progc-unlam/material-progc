@@ -19,12 +19,12 @@ int main( int argc, char *argv[] )
 
     std::thread hilos[kMaxThreads];
 
-    for (int i=0; i<kMaxThreads; i++)
+    for (int i=0; i<kMaxThreads; ++i)
     {
         hilos[i] = std::thread(ThreadDo);
     }
 
-    for (int i=0; i<kMaxThreads; i++) 
+    for (int i=0; i<kMaxThreads; ++i) 
     {
         hilos[i].join();
     }
