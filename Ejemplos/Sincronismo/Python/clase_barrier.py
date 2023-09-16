@@ -1,33 +1,38 @@
 import threading
 
-MAX_HILOS = 5
+MAX_THREADS = 5
+shared_value = -1
+mtx = threading.Lock()	
 
-valor = -1
+def start():
+    global shared_value
+    print(threading.current_thread().name)
+    shared_value = 0
 
-def reiniciar():
-	global valor
-	valor = 0
-	
-def hiloHace():
-	global valor
-	bar.wait()
-	mtx.acquire()
-	valor+=1
-	mtx.release()
-		
-mtx = threading.Lock()		
-bar = threading.Barrier( MAX_HILOS, action=reiniciar )
+bar = threading.Barrier(MAX_THREADS, action=start)
 
-hilos = [] 
+def thread_do():
+    global shared_value
+    bar.wait()
+    mtx.acquire()
+    shared_value+=1
+    mtx.release()
 
-for i in range( MAX_HILOS ):
-	hilos.append( threading.Thread( target=hiloHace ) )
-	hilos[ i ].start()
+def main():
+    threads = [] 
+
+    for i in range(MAX_THREADS):
+        threads.append(threading.Thread(target = thread_do))
+
+    for i in range(MAX_THREADS):
+        threads[i].start()
     
-for i in range( MAX_HILOS ):
-    hilos[ i ].join()
+    for i in range(MAX_THREADS):
+        threads[i].join()
 
-hilos.clear()	
+    threads.clear()	
 
-print( "Valor final: ", valor )
+    print("Valor compartido: ", shared_value)
 
+if __name__ == '__main__':
+    main()
