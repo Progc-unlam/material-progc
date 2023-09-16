@@ -3,28 +3,27 @@
 #include <mutex>
 #include <iostream>
 
-std::recursive_mutex r_mtx;
-int nro = 10;
+std::recursive_mutex recursive_mtx;
+int number = 10;
 
-void calculoRecursivo()
+void RecursiveFunction()
 {
-	r_mtx.lock(); 	
-	
-	if( nro > 0 )
-	{
-		nro--;
-		calculoRecursivo();
-	}
-	
-	r_mtx.unlock();		
+    recursive_mtx.lock();
+
+    if (number > 0)
+    {
+        number--;
+        RecursiveFunction();
+    }
+
+    recursive_mtx.unlock();		
 }
 
 int main( int argc, char *argv[] )
 {
-	std::thread( calculoRecursivo ).join();
-	
-	std::cout<<"Nro: "<<nro<<std::endl;
-	
-	return EXIT_SUCCESS;
-}
+    std::thread(RecursiveFunction).join();
 
+    std::cout<<"Número: "<<number<<std::endl;
+
+    return EXIT_SUCCESS;
+}
