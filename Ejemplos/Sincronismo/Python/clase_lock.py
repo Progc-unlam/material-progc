@@ -1,45 +1,45 @@
 import threading
 import random
 
-MAX_MED = 10 
-FIN_MED =  5 
-MAX_HIL =  2 
+MAX_VALUES = 10 
+MAX_RANGE = 5 
+MAX_THREADS = 2 
 
-mediciones = [ 0 ] * MAX_MED  
+values = [0] * MAX_VALUES  
 min = 100
-
-#Creación del semáforo
 mtx = threading.Lock()	
 
-def calcularMinimo( inicio ):
-	global min
-	for i in range( inicio, inicio+FIN_MED ):
-		mtx.acquire()					# P(mtx)
-		if mediciones[ i ] < min:
-			min = mediciones[ i ]
-		mtx.release()  					# V(mtx)
-    	
+def calculate_min(begin):
+    global min
+    for i in range(begin, begin + MAX_RANGE):
+        mtx.acquire()
+        if values[i] < min:
+            min = values[i]
+        mtx.release()
 
-#Main
-hilos = []
+def main():
+    threads = []
 
-#Carga de mediciones aleatorias entre 0 y 99 
-random.seed()
-for i in range( MAX_MED ):
-	mediciones[ i ] = random.randrange( 100 )
-	
-#Creación de los hilos
-for i in range( MAX_HIL ):
-	hilos.append( threading.Thread( target=calcularMinimo, args=(i*FIN_MED,) ) )
+    #Carga de mediciones aleatorias entre 0 y 99 
+    random.seed()
+    for i in range(MAX_VALUES):
+        values[ i ] = random.randrange( 100 )
 
-#Inicio de los hilos
-for i in range( MAX_HIL ):
-	hilos[ i ].start()
+    #Creación de los hilos
+    for i in range(MAX_THREADS):
+        threads.append(threading.Thread(target = calculate_min, args=(i * MAX_RANGE,)))
 
-#Espera de los hilos
-for i in range( MAX_HIL ):
-	hilos[ i ].join()
+    #Inicio de los hilos
+    for i in range(MAX_THREADS):
+        threads[i].start()
 
-print( "Medición mínima: ", min )
+    #Espera de los hilos
+    for i in range(MAX_THREADS):
+        threads[i].join()
+
+    print("Valores generados: ", values)
+    print("Valor mínimo: ", min)
 
 
+if __name__ == '__main__':
+    main()
