@@ -1,32 +1,31 @@
 import java.util.concurrent.locks.ReentrantLock;
 
-public class Lck
+public class ThreadsLock
 {
 	static ReentrantLock mtx = new ReentrantLock();
-	static int res=0;
+	static int value = 0;
 	
-	static class Hilo extends Thread
+	static class MyThread extends Thread
 	{
 		public void run()
 		{
 			mtx.lock();
-		    res+=1;
+		    value+=1;
 			mtx.unlock();
         }	      
 	}
 	
 	public static void main(String[] args) throws InterruptedException 
 	{
-		Hilo HiloA = new Hilo();
-		Hilo HiloB = new Hilo();
+		MyThread threadA = new MyThread();
+		MyThread threadB = new MyThread();
 	
-		HiloA.start();
-		HiloB.start();			
+		threadA.start();
+		threadB.start();			
 	
-		HiloA.join();
-		HiloB.join();
+		threadA.join();
+		threadB.join();
 						
-		System.out.println( "res: " + res );		
+		System.out.println("Valor: " + value);		
 	}
 }
-
