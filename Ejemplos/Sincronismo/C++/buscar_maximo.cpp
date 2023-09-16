@@ -14,7 +14,7 @@ int max = 0;
 
 void BuscarMaximo(int begin, int end)
 {
-    for (int i=begin; i<end; i++)
+    for (int i=begin; i<end; ++i)
     {
         mtx.lock();   //P( mtx )
         if (values[i] > max)
@@ -29,15 +29,15 @@ int main( int argc, char *argv[] )
 
     srand(time(NULL));
 
-    for (int i=0; i<kMaxValues; i++)
+    for (int i=0; i<kMaxValues; ++i)
         values[i]=rand()%100;	
 
     //Creación de los hilos
-    for (int i=0; i<kMaxThreads; i++) 
+    for (int i=0; i<kMaxThreads; ++i) 
         hilos.push_back(std::thread(BuscarMaximo, i*kLimit, i*kLimit+kLimit));
 
     //Espera la finalización de los hilos creados
-    for (int i=0; i<kMaxThreads; i++) 
+    for (int i=0; i<kMaxThreads; ++i) 
         hilos[i].join();
 
     std::cout<<"Medición máxima: "<<max<<std::endl;
