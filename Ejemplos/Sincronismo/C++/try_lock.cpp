@@ -4,45 +4,44 @@
 #include <iostream>
 
 std::mutex mtx;
-int var = 0;
+int value = 0;
 
-void hiloHace()
+void ThreadDo()
 {
-	int intentos = 10;
-	while( intentos )
-	{
-		if( mtx.try_lock() )//P( mtx )
-		{
-			var++;			//Región crítica
-			mtx.unlock();	//V( mtx )
-			intentos = 0;
-		}
-		else
-		{
-			std::cout<<"No se pudo obtener mtx"<<std::endl;
-			intentos--;
-		}
-	}	
+    int attempts = 10;
+    while (attempts)
+    {
+        if (mtx.try_lock())
+        {
+            value++; 
+            mtx.unlock();	
+            attempts = 0;
+        }
+        else
+        {
+            std::cout<<"No se pudo obtener mtx"<<std::endl;
+            attempts--;
+        }
+    }
 }
 
 int main( int argc, char *argv[] )
 {
-	const int MAX_THREADS = 1000;
-	
-	std::thread hilos[ MAX_THREADS ];
-  
-	for( int i=0; i<MAX_THREADS; ++i )
-	{
-    	hilos[ i ] = std::thread( hiloHace );
-	}
-	
-  	for( int i=0; i<MAX_THREADS; ++i ) 
-	{
-		hilos[ i ].join();
-	}	
+    const int kMaxThreads = 1000;
 
-	std::cout<<"var: "<<var<<std::endl;
-	
-	return EXIT_SUCCESS;
+    std::thread threads[kMaxThreads];
+
+    for (int i=0; i<kMaxThreads; ++i)
+    {
+        threads[i] = std::thread(ThreadDo);
+    }
+
+    for (int i=0; i<kMaxThreads; ++i)
+    {
+        threads[i].join();
+    }
+
+    std::cout<<"Valor: "<<value<<std::endl;
+
+    return EXIT_SUCCESS;
 }
-
