@@ -1,27 +1,28 @@
 import threading
 
-MAX_HILOS = 5
-
-valor = 0
-
-def hiloHace():
-	global valor
-	sem.acquire()
-	valor+=1
-	sem.release()
-		
+MAX_THREADS = 5
 sem = threading.Semaphore(1)	
+value = 0
 
-hilos = [] 
+def thread_do():
+    global value
+    sem.acquire()
+    value+=1
+    sem.release()
 
-for i in range( MAX_HILOS ):
-	hilos.append( threading.Thread( target=hiloHace ) )
-	hilos[ i ].start()
-    
-for i in range( MAX_HILOS ):
-    hilos[ i ].join()
+def main():
+    threads = [] 
 
-hilos.clear()	
+    for i in range(MAX_THREADS):
+        threads.append(threading.Thread(target=thread_do))
+        threads[i].start()
 
-print( "Valor final: ", valor )
+    for i in range(MAX_THREADS):
+        threads[i].join()
 
+    threads.clear()	
+
+    print("Valor final: ", value)
+
+if __name__ == '__main__':
+    main()
