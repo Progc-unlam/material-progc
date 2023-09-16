@@ -1,9 +1,9 @@
 public class ThreadsSynchronized
 {
+    static int value = 0;
+
     static class MyThread extends Thread
     {
-        static int value = 0;
-
         synchronized public void run()
         {
             value++;
@@ -21,6 +21,6 @@ public class ThreadsSynchronized
         hiloA.join();
         hiloB.join();
 				
-        System.out.println("Valor "+value );		
+        System.out.println("Valor " + value);		
     }
 }
