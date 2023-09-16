@@ -1,4 +1,4 @@
-public class HilosSincro2
+public class ThreadsSynchronizedB
 {
 	static int res=0;
 	
