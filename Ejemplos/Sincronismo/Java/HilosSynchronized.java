@@ -1,27 +1,26 @@
-public class HilosSincro
+public class ThreadsSynchronized
 {
-	static int res=0;
-	
-	static class Hilo extends Thread
-	{
-		synchronized public void run()
-		{
-		    res+=1;
-        }	      
-	}
-	
-	public static void main(String[] args) throws InterruptedException 
-	{
-		Hilo HiloA = new Hilo();
-		Hilo HiloB = new Hilo();
-	
-		HiloA.start();
-		HiloB.start();			
-	
-		HiloA.join();
-		HiloB.join();
-						
-		System.out.println( "res: " + res );		
-	}
-}
+    static class MyThread extends Thread
+    {
+        static int value = 0;
 
+        synchronized public void run()
+        {
+            value++;
+        }	      
+    }
+
+    public static void main(String[] args) throws InterruptedException 
+    {
+        MyThread hiloA = new MyThread();
+        MyThread hiloB = new MyThread();
+
+        hiloA.start();
+        hiloB.start();			
+
+        hiloA.join();
+        hiloB.join();
+				
+        System.out.println("Valor "+value );		
+    }
+}
