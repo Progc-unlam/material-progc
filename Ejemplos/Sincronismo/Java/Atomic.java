@@ -5,7 +5,7 @@ public class Atomic
     static AtomicInteger count = new AtomicInteger(0);
 
     static class MyThread extends Thread 
-   {
+    {
         public void run()
         {
             for (int i=0; i<100; ++i) 
