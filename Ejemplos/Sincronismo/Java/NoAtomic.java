@@ -3,7 +3,7 @@ public class NoAtomic
     static int count = 0;
 
     static class MyThread extends Thread 
-   {
+    {
         public void run()
         {
             for (int i=0; i<100; ++i) 
