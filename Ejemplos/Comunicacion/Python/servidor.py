@@ -4,30 +4,35 @@ MAX_PEND = 10
 PUERTO = 5000
 
 def servidor():
-    #Creación del socket
     ss = socket.socket()
 
-    #Vincular puerto y dirección IP con el socket
-    ss.bind(("127.0.0.1", PUERTO))
+    try:
+        ss.bind(("127.0.0.1", PUERTO))
+    except OSError as e:
+        print(f"Error al enlazar el socket: {e}")
+        return
 
-    #Ponemos en modo escucha y establecemos la
-    #cantidad de peticiones que puede encolar
     ss.listen(MAX_PEND)
+    print(f"Servidor escuchando en 127.0.0.1:{PUERTO}...")
 
-    #Espera por una petición de conexión
-    (cs, dir) = ss.accept()
+    cs, dir = ss.accept()
+    print(f"Conexión aceptada desde {dir}")
 
-    while True:
-        recibi = cs.recv(1024).decode("ascii")
-        if recibi == "fin":
-            break
-        print(recibi)
-
-    print("finalizado")
-
-    #Cierre de los sockets
-    ss.close()
-    cs.close()
+    try:
+        while True:
+            data = cs.recv(1024)
+            if not data:
+                break
+            recibi = data.decode("utf-8")
+            if recibi.strip() == "fin":
+                break
+            print("Recibido:", recibi)
+    except Exception as e:
+        print(f"Error durante la comunicación: {e}")
+    finally:
+        cs.close()
+        ss.close()
+        print("Conexión cerrada.")
 
 if __name__ == '__main__':
     servidor()
