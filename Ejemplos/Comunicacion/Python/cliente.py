@@ -3,20 +3,22 @@ import socket
 PUERTO = 5000
 
 def cliente():
-    #Creación del socket
     cs = socket.socket()
 
-    #Se emite una solicitud de conexión
-    cs.connect(("127.0.0.1", PUERTO))
+    try:
+        cs.connect(("127.0.0.1", PUERTO))
+    except ConnectionRefusedError:
+        print("Error: no se pudo conectar al servidor.")
+        return
 
+    print("Conectado al servidor. Escribe 'fin' para salir.")
     while True:
-        envie = input("> ")
-        cs.send(envie.encode())
+        envie = input("> ").strip()
+        cs.send(envie.encode("utf-8"))
         if envie == "fin":
             break
-    print("finalizado")
 
-    #Cierre del socket
+    print("Conexión cerrada.")
     cs.close()
 
 if __name__ == '__main__':
