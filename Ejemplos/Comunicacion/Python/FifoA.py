@@ -10,7 +10,7 @@ except OSError as err:
 	
 fifo = os.open( "./fifo", os.O_WRONLY )
 
-os.write( fifo,  ("Café La Morenita").encode() )
+os.write( fifo,  "Café La Morenita".encode() )
 
 os.close( fifo )
 
