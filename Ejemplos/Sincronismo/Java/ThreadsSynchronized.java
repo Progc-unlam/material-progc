@@ -1,12 +1,16 @@
 public class ThreadsSynchronized
 {
-    static int value = 0;
+    private static final Object lock = new Object();
+	static int value = 0;
 
     static class MyThread extends Thread
     {
-        synchronized public void run()
+        public void run()
         {
-            value++;
+            synchronized(lock)
+			{
+			    value++;
+			}	
         }	      
     }
 
